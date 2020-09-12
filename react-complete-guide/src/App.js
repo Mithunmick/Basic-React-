@@ -1,98 +1,163 @@
-import React, { useState } from 'react';
-
+import React, { useState, Component} from 'react';
 import './App.css';
 import Person from './Person/Person';
 
-// class App extends Component {
-
-//   state = {
-//     Persons: [
-//       {name: 'MAX', age: 28},
-//       {name: 'Mum', age: 26},
-//       {name: 'Mer', age: 27}
-//     ],
-//     othersState: 'some other value'
-//   }
-const App = props => {
-  const [personsState, setPersonsState] = useState({
-    Persons: [
-      {name: 'MAX', age: 28},
-      {name: 'Mum', age: 26},
-      {name: 'Mer', age: 27}
-    ],
-    othersState: 'some other value'
-  });
-
-  const [otherState, setotherState] = useState('some other value');
-
-  console.log(personsState);
-
-  const switchNmaneHandler = () => {
-    // console.log('was clicked!');
-    // Do'not do thisthis.state.Persons[0].name = 'MAKI';
-    setPersonsState({
-      Persons: [
-        {name: 'MAmu', age: 30},
-        {name: 'Mum', age: 26},
-        {name: 'Mer', age: 29}
+class App extends Component {
+    state = {
+      persons: [
+        { id: 'asa', name: 'Max', age: 28 },
+        { id: 'ass', name: 'Mithun', age: 2 },
+        { id: 'ssa', name: 'Jack', age: 8 }
       ],
-      otherState: personsState.otherState
-     });
-  };
+      othersState: 'some other value',
+      showPersons: false
+	}
 
-    return (
-      <div className="App">
-        <h1>Hi, I'm a React App</h1>
-        <p>This is really working!</p>
-        <button onClick={switchNmaneHandler}>Switch Nmae</button>
-        {/* <Person name="MAX" age="28" />
-        <Person name="MAY" age="29">My Hobbies: Racing</Person>
-        <Person name="MICK" age="30" /> */}
-        <Person name={personsState.Persons[0].name} age={personsState.Persons[0].age} />
-        <Person name={personsState.Persons[1].name} age={personsState.Persons[1].age}>My Hobbies: Racing</Person>
-        <Person name={personsState.Persons[2].name} age={personsState.Persons[2].age} />
-      </div>
+
+
+  nameChangedHandler = (event, id) => {
+
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+
+    //const person = Object.assign({}, this.state.persons[personIndex]);
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState ({persons: persons});
+
+    
+  }
+
+  deletePersonHandler = (personIndex) => {
+    // const persons = this.state.persons.splice();
+    const persons = [...this.state.persons];
+		persons.splice(personIndex, 1);
+		this.setState({ persons: persons });
+	}
+
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({showPersons: !doesShow});
+  }
+
+	render() {
+		const style = {
+			backgroundColor: 'white',
+			font: 'inherit',
+			border: '1px solid blue',
+			padding: '8px',
+			cursor: 'pointer'
+    };
+    
+    let persons = null;
+
+    if (this.state.showPersons) {
+			persons = (
+				<div>
+					{this.state.persons.map((person, index) => {
+						return <Person
+							click={() => this.deletePersonHandler(index)}
+							name={person.name}
+							age={person.age}
+							key={person.id}
+              changed= {(event) => this.nameChangedHandler(event, person.id)} />
+					})}
+				</div>
+			);
+		}
+
+		return (
+		<div className="App">
+			<h1>Hi, I'm a React App</h1>
+			<p>This is really working!</p>
+			<button style={style} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+      {persons}  
+    </div>
     );
     // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Dose this work now?'));
+  }
+}
 
-};
+
 
 export default App;
 
-// state = {
-//   Persons: [
-//     {name: 'MAX', age: 28},
-//     {name: 'Mum', age: 26},
-//     {name: 'Mer', age: 27}
-//   ],
-//   othersState: 'some other value'
+
+
+///-----------------Example of React HOOK------------------------
+// const [personsState, setPersonsState] = useState({
+// 	persons: [
+// 		{ name: 'Max', age: 28 },
+// 		{ name: 'Mithun', age: 2 },
+// 		{ name: 'Jack', age: 8 }
+// 	],
+// 	otherState: 'Some other value'
+// });
+
+// const switchNameHandler = () => {
+// 	setPersonsState({
+// 		persons: [
+// 			{ name: 'Hosti', age: 28 },
+// 			{ name: 'Mithuniyan', age: 2 },
+// 			{ name: 'Jack Sparrow', age: 8 }
+// 		]
+// 	});
+// };
+
+//-------------------SwitchHandler for default state management---------
+// switchNameHandler = (newName) => {
+// 	this.setState({
+// 		persons: [
+// 			{ name: 'Hosti', age: 28 },
+// 			{ name: newName, age: 2 },
+// 			{ name: 'Jack Sparrow', age: 8 }
+// 		]
+// 	});
 // }
 
-// switchNmaneHandler = () => {
-//   // console.log('was clicked!');
-//   // Do'not do thisthis.state.Persons[0].name = 'MAKI';
-//   this.setState({
-//     Persons: [
-//       {name: 'MAmu', age: 30},
-//     {name: 'Mum', age: 26},
-//     {name: 'Mer', age: 29}
-//     ]
-//    })
+//-------------------deletePerson Bad Practice------------------------
+// deletePersonHandler = (personIndex) => {
+// 	const persons = this.state.persons;
+// 	persons.splice(personIndex, 1);
+// 	this.setState({ persons: persons });
 // }
 
-// render() {
-//   return (
-//     <div className="App">
-//       <h1>Hi, I'm a React App</h1>
-//       <p>This is really working!</p>
-//       <button onClick={this.switchNmaneHandler}>Switch Nmae</button>
-//       {/* <Person name="MAX" age="28" />
-//       <Person name="MAY" age="29">My Hobbies: Racing</Person>
-//       <Person name="MICK" age="30" /> */}
-//       <Person name={this.state.Persons[0].name} age={this.state.Persons[0].age} />
-//       <Person name={this.state.Persons[1].name} age={this.state.Persons[1].age}>My Hobbies: Racing</Person>
-//       <Person name={this.state.Persons[2].name} age={this.state.Persons[2].age} />
-//     </div>
-//   );
-//   // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Dose this work now?'));
+//------------------Had an alternative approach----------------------
+// deletePersonHandler = (personIndex) => {
+// 	const persons = this.state.persons.slice();
+// 	persons.splice(personIndex, 1);
+// 	this.setState({ persons: persons });
 // }
+
+
+//-------------------Conditional Rendering-------------------
+// {
+// 	this.state.showPersons === true ?
+// 		<div>
+// 			<Person name={this.state.persons[0].name}
+// 				age={this.state.persons[0].age} />
+
+// 			<Person name={this.state.persons[1].name}
+// 				age={this.state.persons[1].age}
+// 				click={this.switchNameHandler.bind(this, "WuzzY")}
+// 				changed={this.nameChangedHandler}>
+// 				My Hobbies: Racing
+// 			</Person>
+
+// 			<Person
+// 				name={this.state.persons[2].name}
+// 				age={this.state.persons[2].age} />
+// 		</div> : null
+// }
+
+
+
