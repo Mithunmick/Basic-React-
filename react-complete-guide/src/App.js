@@ -1,7 +1,7 @@
 import React, { useState, Component} from 'react';
 // import styled from 'styled-components';
-import './App.css';
-// import classes from './App.css';
+//import './App.css';
+ import classes from './App.css';
 
 import Person from './Person/Person';
 
@@ -67,19 +67,20 @@ class App extends Component {
   }
 
 	render() {
-		const style = {
-      backgroundColor: 'green',
-      color: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px',
-      cursor: 'pointer',
+    let btnClass = '';
+		// const style = {
+    //   backgroundColor: 'green',
+    //   color: 'white',
+    //   font: 'inherit',
+    //   border: '1px solid blue',
+    //   padding: '8px',
+    //   cursor: 'pointer',
 
-      ':hover' : {
-        backgroundColor: 'lightgreen',
-        color: 'black'
-      }
-    };
+    //   ':hover' : {
+    //     backgroundColor: 'lightgreen',
+    //     color: 'black'
+    //   }
+    // };
 
     let persons = null;
 
@@ -98,51 +99,57 @@ class App extends Component {
       );
       
 
-      style.backgroundColor = 'red';
-      style[':hover'] = {
-        backgroundColor: 'salmon',
-        color: 'black'
-      };
+      // style.backgroundColor = 'red';
+      // style[':hover'] = {
+      //   backgroundColor: 'salmon',
+      //   color: 'black'
+      // };
+
+      btnClass= classes.Red;
+
     }
     
-    const classes = []; 
-    if (this.state.persons.length <= 2) {
-      classes.push('red'); //classes = ['red]
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push('bold'); //classes = ['red', 'bold']
-    }
-
-		return (
-     
-        <div className="App">
-          <h1>Hi, I'm a React App</h1>
-          <p className={classes.join(' ')}>This is really working!</p>
-          <button className="button" onClick={this.togglePersonsHandler}>Toggle Persons</button>
-          {persons}  
-        </div>
-      
-    );
-    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Dose this work now?'));
-  }
-    // const assignedClasses = []; 
+    // const classes = []; 
     // if (this.state.persons.length <= 2) {
-    //   assignedClasses.push(classes.red); //classes = ['red]
+    //   classes.push('red'); //classes = ['red]
     // }
     // if (this.state.persons.length <= 1) {
-    //   assignedClasses.push(classes.bold); //classes = ['red', 'bold']
+    //   classes.push('bold'); //classes = ['red', 'bold']
     // }
 
 		// return (
      
-    //     <div className={classes.App}>
+    //     <div className="App">
     //       <h1>Hi, I'm a React App</h1>
-    //       <p className={assignedClasses.join(' ')}>This is really working!</p>
-    //       <button className={classes.Button} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+    //       <p className={classes.join(' ')}>This is really working!</p>
+    //       <button className="button" onClick={this.togglePersonsHandler}>Toggle Persons</button>
     //       {persons}  
     //     </div>
       
     // );
+    // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Dose this work now?'));
+    
+    const assignedClasses = []; 
+    if (this.state.persons.length <= 2) {
+      assignedClasses.push(classes.red); //classes = ['red]
+    }
+    if (this.state.persons.length <= 1) {
+      assignedClasses.push(classes.bold); //classes = ['red', 'bold']
+    }
+
+		return (
+     
+        <div className={classes.App}>
+          <h1>Hi, I'm a React App</h1>
+          <p className={assignedClasses.join(' ')}>This is really working!</p>
+          <button className={btnClass} onClick={this.togglePersonsHandler}>Toggle Persons</button>
+          {persons}  
+        </div>
+      
+    );
+  }
+
+    
     
 }
 
